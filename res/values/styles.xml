@@ -45,7 +45,8 @@
         <item name="fastscrollerTextColor">#FFFFFF</item>
     </style>
 
-    <style name="LauncherTheme" parent="@style/BaseLauncherThemeWithCustomAttrs"></style>
+    <style name="LauncherTheme" parent="@style/BaseLauncherThemeWithCustomAttrs">
+    </style>
 
     <style name="LauncherTheme.DarkText" parent="@style/LauncherTheme">
         <item name="workspaceTextColor">#FF212121</item>
@@ -131,6 +132,16 @@
     <style name="AppTheme.Dark.DarkText" parent="@style/LauncherTheme.Dark.DarkText" />
     <style name="AppTheme.Black" parent="@style/LauncherTheme.Black" />
     <style name="AppTheme.Black.BlackText" parent="@style/LauncherTheme.Black.BlackText" />
+
+    <style name="HotseatQsbTheme">
+        <item name="gIcon">@drawable/ic_super_g_shadow</item>
+        <item name="micIcon">@drawable/ic_mic_shadow</item>
+    </style>
+
+    <style name="HotseatQsbTheme.Colored" parent="@style/HotseatQsbTheme">
+        <item name="gIcon">@drawable/ic_super_g_color</item>
+        <item name="micIcon">@null</item>
+    </style>
 
     <!--
     Theme overrides to element on homescreen, i.e., which are drawn on top on wallpaper.
