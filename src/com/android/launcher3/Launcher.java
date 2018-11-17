@@ -833,6 +833,10 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         mDragController.cancelDrag();
         mDragController.resetLastGestureUpTime();
 
+        if (mQuickSpace != null) {
+            mQuickSpace.onPause();
+        }
+
         if (mFeedIntegrationEnabled) {
             mLauncherTab.getClient().onPause();
         }
