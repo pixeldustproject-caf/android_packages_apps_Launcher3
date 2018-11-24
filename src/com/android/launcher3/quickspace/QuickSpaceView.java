@@ -76,6 +76,7 @@ public class QuickSpaceView extends FrameLayout implements ValueAnimator.Animato
     private BubbleTextView mBubbleTextView;
     private DoubleShadowTextView mClockView;
     private View.OnClickListener mCalendarClickListener;
+    private View.OnClickListener mWeatherClickListener;
     private ImageView mWeatherIcon;
     private TextView mWeatherTemp;
     private View mSeparator;
@@ -96,6 +97,7 @@ public class QuickSpaceView extends FrameLayout implements ValueAnimator.Animato
     private WeatherSettingsObserver mWeatherSettingsObserver;
     private boolean mUseImperialUnit;
     private boolean mHasGoogleCalendar = hasPackage("com.google.android.calendar");
+    private boolean mHasGoogleQuickSearchbox = hasPackage("com.google.android.googlequicksearchbox");
 
     private ColorStateList mColorStateList;
     private DateFormat mDateFormat;
@@ -131,6 +133,22 @@ public class QuickSpaceView extends FrameLayout implements ValueAnimator.Animato
                     Launcher.getLauncher(context).startActivitySafely(view, addFlags, null);
                 } catch (ActivityNotFoundException ex) {
                     LauncherAppsCompat.getInstance(getContext()).showAppDetailsForProfile(new ComponentName("com.google.android.calendar", ""), Process.myUserHandle());
+                }
+            }
+        };
+
+        mWeatherClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("dynact://velour/weather/ProxyActivity"));
+                intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
+                    "com.google.android.apps.gsa.velour.DynamicActivityTrampoline"));
+                try {
+                    final Context context = getContext();
+                    Launcher.getLauncher(context).startActivitySafely(view, intent, null);
+                } catch (ActivityNotFoundException ex) {
+                    LauncherAppsCompat.getInstance(getContext()).showAppDetailsForProfile(new ComponentName("com.google.android.googlequicksearchbox", ""), Process.myUserHandle());
                 }
             }
         };
@@ -184,6 +202,7 @@ public class QuickSpaceView extends FrameLayout implements ValueAnimator.Animato
     private void loadSingleLine() {
         setBackgroundResource(0);
         mClockView.setOnClickListener(mHasGoogleCalendar ? mCalendarClickListener : null);
+        mWeatherContent.setOnClickListener(mHasGoogleQuickSearchbox ? mWeatherClickListener : null);
         if (!WeatherClient.isAvailable(getContext())) {
             mWeatherContent.setVisibility(View.GONE);
             mSeparator.setVisibility(View.GONE);
