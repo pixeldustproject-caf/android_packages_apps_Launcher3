@@ -243,4 +243,8 @@
     <dimen name="qsb_text_spacing">20.0dip</dimen>
     <dimen name="qsb_two_bubble_gap">8.0dip</dimen>
     <dimen name="qsb_widget_height">56.0dip</dimen>
+    <!-- Hide/Show search bars -->
+    <dimen name="dynamic_grid_hotseat_top_padding_hidden_bottom_qsb">8dp</dimen>
+    <dimen name="dynamic_grid_hotseat_bottom_padding_hidden_bottom_qsb">0dp</dimen>
+
 </resources>
