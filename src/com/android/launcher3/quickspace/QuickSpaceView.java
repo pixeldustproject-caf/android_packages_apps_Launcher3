@@ -106,6 +106,8 @@ public class QuickSpaceView extends FrameLayout implements ValueAnimator.Animato
 
     private View.OnClickListener mQuickEventClickListener;
 
+    private static final String FONT_FAMILY_MEDIUM = "sans-serif-medium";
+
     public QuickSpaceView(Context context, AttributeSet set) {
         super(context, set);
         mHandler = new Handler();
@@ -277,7 +279,7 @@ public class QuickSpaceView extends FrameLayout implements ValueAnimator.Animato
     }
 
     private void setTypeface(TextView... views) {
-        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/GoogleSans-Regular.ttf");
+        Typeface tf = Typeface.create(FONT_FAMILY_MEDIUM, Typeface.NORMAL);
         for (TextView view : views) {
             if (view != null) {
                 view.setTypeface(tf);
