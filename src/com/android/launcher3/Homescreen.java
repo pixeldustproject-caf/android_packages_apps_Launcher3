@@ -37,7 +37,8 @@ import com.android.internal.util.pixeldust.PixeldustUtils;
 
 public class Homescreen extends SettingsActivity implements PreferenceFragment.OnPreferenceStartFragmentCallback {
 
-    static final String KEY_FEED_INTEGRATION = "pref_feed_integration";
+    //static final String KEY_FEED_INTEGRATION = "pref_feed_integration";
+    public static final String KEY_MINUS_ONE = "pref_enable_minus_one";
     static final String KEY_SHOW_QUICKSPACE = "pref_show_quickspace";
 
     @Override
@@ -79,15 +80,20 @@ public class Homescreen extends SettingsActivity implements PreferenceFragment.O
             assert actionBar != null;
             actionBar.setDisplayHomeAsUpEnabled(true);
 
-            SwitchPreference feedIntegration = (SwitchPreference)
-                    findPreference(KEY_FEED_INTEGRATION);
+            //SwitchPreference feedIntegration = (SwitchPreference)
+            //        findPreference(KEY_FEED_INTEGRATION);
+
+            SwitchPreference minusOne = (SwitchPreference) findPreference(KEY_MINUS_ONE);
+            if (!Bits.hasPackageInstalled(getActivity(),
+                        Launcher.SEARCH_PACKAGE)) {
+                getPreferenceScreen().removePreference(minusOne);
 
             SwitchPreference showQuickspace = (SwitchPreference)
                     findPreference(KEY_SHOW_QUICKSPACE);
 
-            if (!PixeldustUtils.isPackageInstalled(mContext, LauncherTab.SEARCH_PACKAGE)) {
+            /*if (!PixeldustUtils.isPackageInstalled(mContext, LauncherTab.SEARCH_PACKAGE)) {
                 getPreferenceScreen().removePreference(feedIntegration);
-            }
+            }*/
 
             // Setup allow rotation preference
             Preference rotationPref = findPreference(ALLOW_ROTATION_PREFERENCE_KEY);

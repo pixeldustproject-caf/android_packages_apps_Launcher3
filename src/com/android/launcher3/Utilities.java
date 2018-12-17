@@ -824,10 +824,10 @@ public final class Utilities {
         handler.sendMessage(msg);
     }
 
-    static boolean hasFeedIntegration(Context context) {
+    /*static boolean hasFeedIntegration(Context context) {
         SharedPreferences prefs = getPrefs(context.getApplicationContext());
         return prefs.getBoolean(Homescreen.KEY_FEED_INTEGRATION, true);
-    }
+    }*/
 
     public static boolean showQuickspace(Context context) {
         SharedPreferences prefs = getPrefs(context.getApplicationContext());
