@@ -137,6 +137,8 @@ import com.android.launcher3.widget.WidgetListRowEntry;
 import com.android.launcher3.widget.WidgetsFullSheet;
 import com.android.launcher3.widget.custom.CustomWidgetParser;
 
+import com.google.android.libraries.gsa.launcherclient.ClientOptions;
+import com.google.android.libraries.gsa.launcherclient.ClientService;
 import com.google.android.libraries.gsa.launcherclient.LauncherClient;
 
 import java.io.FileDescriptor;
@@ -385,7 +387,7 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         mRotationHelper.initialize();
 
         mOverlayCallbacks = new OverlayCallbackImpl(mLauncher);
-        mLauncherClient = new LauncherClient(mLauncher, mOverlayCallbacks, getClientOptions(mSharedPrefs));
+        mLauncherClient = new LauncherClient(mLauncher, mOverlayCallbacks, new ClientOptions(((prefs.getBoolean(SettingsFragment.KEY_MINUS_ONE, true) ? 1 : 0) | 2 | 4 | 8)));
         mOverlayCallbacks.setClient(mLauncherClient);
 
         mSharedPrefs.registerOnSharedPreferenceChangeListener(this);
@@ -1234,7 +1236,10 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        mLauncherClient.onDetachedFromWindow();
+        if (!mLauncherClient.isDestroyed()) {
+            mLauncherClient.getEventInfo().parse(0, "detachedFromWindow", 0.0f);
+            mLauncherClient.setParams(null);
+        }
 
         /*if (mFeedIntegrationEnabled) {
             mLauncherTab.getClient().onDetachedFromWindow();
@@ -1447,7 +1452,28 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
 
         clearPendingBinds();
 
-        mLauncherClient.onDestroy();
+        if (!mLauncherClient.isDestroyed()) {
+            mLauncherClient.getActivity().unregisterReceiver(mLauncherClient.mInstallListener);
+        }
+        mLauncherClient.setDestroyed(true);
+        mLauncherClient.getBaseService().disconnect();
+        if (mLauncherClient.getOverlayCallback() != null) {
+            mLauncherClient.getOverlayCallback().client = null;
+            mLauncherClient.getOverlayCallback().windowManager = null;
+            mLauncherClient.getOverlayCallback().window = null;
+            mLauncherClient.setOverlayCallback(null);
+        }
+        ClientService service = mLauncherClient.getClientService();
+        LauncherClient client = service.getClient();
+        if (client != null && client.equals(mLauncherClient)) {
+            service.mWeakReference = null;
+            if (!mLauncherClient.getActivity().isChangingConfigurations()) {
+                service.disconnect();
+                if (ClientService.sInstance == service) {
+                    ClientService.sInstance = null;
+                }
+            }
+        }
         Utilities.getPrefs(mLauncher).unregisterOnSharedPreferenceChangeListener(this);
 
         /*if (mFeedIntegrationEnabled) {
@@ -2584,7 +2610,14 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
             }
         }*/
         if (Homescreen.KEY_MINUS_ONE.equals(key)) {
-            mLauncherClient.setClientOptions(getClientOptions(sharedPreferences));
+            ClientOptions clientOptions = new ClientOptions((sharedPreferences.getBoolean(SettingsFragment.KEY_MINUS_ONE, true) ? 1 : 0) | 2 | 4 | 8);
+            if (clientOptions.options != mLauncherClient.mFlags) {
+                mLauncherClient.mFlags = clientOptions.options;
+                if (mLauncherClient.getParams() != null) {
+                    mLauncherClient.updateConfiguration();
+                }
+                mLauncherClient.getEventInfo().parse("setClientOptions ", mLauncherClient.mFlags);
+            }
         }
         if ("pref_iconPackPackage".equals(key)) {
             mModel.clearIconCache();
@@ -2599,13 +2632,8 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
         }
     }
 
-    private LauncherClient.ClientOptions getClientOptions(SharedPreferences prefs) {
-        boolean hasPackage = Bits.hasPackageInstalled(mLauncher, SEARCH_PACKAGE);
-        boolean isEnabled = prefs.getBoolean(SettingsFragment.KEY_MINUS_ONE, true);
-        return new LauncherClient.ClientOptions(hasPackage && isEnabled,
-                true, /* enableHotword */
-                true /* enablePrewarming */
-        );
+    private LauncherClient getClient() {
+        return mLauncherClient;
     }
 
     public void updatePredictions(boolean force) {
