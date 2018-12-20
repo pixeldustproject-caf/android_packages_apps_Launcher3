@@ -34,6 +34,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="home_grid_title">Grid layout</string>
     <string name="icon_layout_title">Icon layout</string>
     <string name="home_quickspace_title">At A Glance</string>
+    <string name="home_custom_recents_title">Custom recents rounded corners</string>
 
     <!-- Icon packs -->
     <string name="iconPackPackageDefault" translatable="false">""</string>
@@ -165,5 +166,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <string name="workspace_gradient_summary">Enable a subtle gradient from the status bar</string>
     <string name="hotseat_gradient_title">Show gradient on bottom</string>
     <string name="hotseat_gradient_summary">Enable a subtle gradient from the launcher dock</string>
+
+    <!-- Recents corned -->
+    <string name="custom_recents_corners_switch_title">Use custom recents rounded corners</string>
+    <string name="custom_recents_corners_switch_summary">If disabled, it\'ll use the one provided by the system/theme. To apply the new value, go to home after selecting your option.</string>
+    <string name="custom_recents_corners_type_title">Custom recents roundness</string>
+    <string name="custom_recents_corners_type_default">Default</string>
+    <string name="custom_recents_corners_type_card">Rounded Card</string>
+    <string name="custom_recents_corners_type_op">OP Style</string>
 
 </resources>
