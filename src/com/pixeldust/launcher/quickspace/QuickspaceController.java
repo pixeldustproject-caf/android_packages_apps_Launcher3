@@ -135,7 +135,7 @@ public class QuickspaceController implements WeatherObserver {
         }
 
         public void updateLockscreenUnit() {
-            mUseImperialUnit = Settings.System.getInt(mResolver, SETTING_WEATHER_LOCKSCREEN_UNIT, 1) != 0;
+            mUseImperialUnit = Settings.System.getInt(mResolver, SETTING_WEATHER_LOCKSCREEN_UNIT, 0) != 0;
             notifyListeners();
         }
     }
