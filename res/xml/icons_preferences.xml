@@ -25,6 +25,12 @@
         android:key="icon_layout_category"
         android:title="@string/icon_layout_title">
 
+        <com.android.launcher3.iconpack.CustomIconPreference
+            android:key="pref_icon_pack"
+            android:title="@string/icon_pack"
+            android:summary="@string/icon_pack_summary"
+            android:persistent="true" />
+
         <ListPreference
             android:key="pref_override_icon_shape"
             android:title="@string/icon_shape_override_label_custom"
