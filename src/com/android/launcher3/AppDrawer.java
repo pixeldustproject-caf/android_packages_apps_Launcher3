@@ -22,6 +22,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -30,6 +31,7 @@ import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -44,9 +46,11 @@ import android.os.SystemClock;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceFragment.OnPreferenceStartFragmentCallback;
 import android.preference.PreferenceScreen;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.SwitchPreference;
+import android.preference.TwoStatePreference;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
@@ -58,6 +62,8 @@ import com.android.launcher3.notification.NotificationListener;
 import com.android.launcher3.util.ListViewHighlighter;
 import com.android.launcher3.util.SettingsObserver;
 import com.android.launcher3.views.ButtonPreference;
+import com.android.launcher3.R;
+
 import android.util.Log;
 import android.view.MenuItem;
 import com.android.launcher3.util.LooperExecutor;
@@ -70,6 +76,7 @@ import java.util.Objects;
 public class AppDrawer extends SettingsActivity implements PreferenceFragment.OnPreferenceStartFragmentCallback {
 
     private static final String HIDDEN_APPS = "hidden_app";
+    public static final String KEY_APP_SUGGESTIONS = "pref_app_suggestions";
 
     @Override
     protected void onCreate(final Bundle bundle) {
@@ -128,6 +135,22 @@ public class AppDrawer extends SettingsActivity implements PreferenceFragment.On
                     startActivity(new Intent(getActivity(), HiddenAppsActivity.class));
                     return false;
             });
+
+            SwitchPreference showAppPredictions = (SwitchPreference) findPreference(KEY_APP_SUGGESTIONS);
+            showAppPredictions.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if (!KEY_APP_SUGGESTIONS.equals(preference.getKey())) {
+                        return false;
+                    }
+                    if (((Boolean) newValue).booleanValue()) {
+                        return true;
+                    }
+                    AppDrawer.SuggestionConfirmationFragment suggestionConfirmationFragment = new AppDrawer.SuggestionConfirmationFragment();
+                    //suggestionConfirmationFragment.setTargetFragment(this, 0);
+                    suggestionConfirmationFragment.show(getFragmentManager(), preference.getKey());
+                    return false;
+                }
+            });
         }
 
         @Override
@@ -163,4 +186,25 @@ public class AppDrawer extends SettingsActivity implements PreferenceFragment.On
 
         return super.onOptionsItemSelected(item);
     }
+
+    public static class SuggestionConfirmationFragment extends DialogFragment implements OnClickListener {
+        public Dialog onCreateDialog(Bundle bundle) {
+            return new Builder(getContext())
+                .setTitle(R.string.title_disable_suggestions_prompt)
+                .setMessage(R.string.msg_disable_suggestions_prompt)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(R.string.label_turn_off_suggestions, this)
+                .create();
+        }
+
+        public void onClick(DialogInterface dialogInterface, int res) {
+            if (getTargetFragment() instanceof PreferenceFragment) {
+                Preference findPreference = ((PreferenceFragment) getTargetFragment()).findPreference(KEY_APP_SUGGESTIONS);
+                if (findPreference instanceof TwoStatePreference) {
+                    ((TwoStatePreference) findPreference).setChecked(false);
+                }
+            }
+        }
+    }
+
 }
