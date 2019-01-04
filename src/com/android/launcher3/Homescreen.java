@@ -87,6 +87,7 @@ public class Homescreen extends SettingsActivity implements PreferenceFragment.O
             if (!Bits.hasPackageInstalled(getActivity(),
                         Launcher.SEARCH_PACKAGE)) {
                 getPreferenceScreen().removePreference(minusOne);
+            }
 
             SwitchPreference showQuickspace = (SwitchPreference)
                     findPreference(KEY_SHOW_QUICKSPACE);
