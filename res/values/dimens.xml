@@ -33,9 +33,9 @@
 
     <!-- Hotseat -->
     <dimen name="dynamic_grid_hotseat_top_padding">0.0dip</dimen>
-    <dimen name="dynamic_grid_hotseat_bottom_padding">62.0dip</dimen>
+    <dimen name="dynamic_grid_hotseat_bottom_padding">52.0dip</dimen>
     <!-- Extra bottom padding for non-tall devices. -->
-    <dimen name="dynamic_grid_hotseat_bottom_non_tall_padding">15.0dip</dimen>
+    <dimen name="dynamic_grid_hotseat_bottom_non_tall_padding">10.0dip</dimen>
     <dimen name="dynamic_grid_hotseat_size">70.0dip</dimen>
     <dimen name="dynamic_grid_hotseat_side_padding">0.0dip</dimen>
 
@@ -242,7 +242,7 @@
     <dimen name="status_bar_height">24dp</dimen>
     <dimen name="all_apps_search_bar_height">60dp</dimen>
     <!-- Hide/Show search bars -->
-    <dimen name="dynamic_grid_hotseat_top_padding_hidden_bottom_qsb">8dp</dimen>
-    <dimen name="dynamic_grid_hotseat_bottom_padding_hidden_bottom_qsb">0dp</dimen>
+    <dimen name="dynamic_grid_hotseat_top_padding_hidden_bottom_qsb">0.0dip</dimen>
+    <dimen name="dynamic_grid_hotseat_bottom_padding_hidden_bottom_qsb">50.0dip</dimen>
 
 </resources>
