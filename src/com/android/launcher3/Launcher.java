@@ -2575,8 +2575,8 @@ public class Launcher extends BaseDraggingActivity implements LauncherExterns,
             }
         }
         if (SettingsIcons.ICON_PACK_PREF.equals(key)) {
-            mModel.clearIconCache();
-            mModel.forceReload();
+            LauncherAppState.getInstance(this).getIconCache().clear();
+            Launcher.getLauncher(this).getModel().forceReload();
         }
         if (KEY_HOMESCREEN_DT_GESTURES.equals(key)) {
             mWorkspace.setGestures(Integer.valueOf(sharedPreferences.getString("KEY_HOMESCREEN_DT_GESTURES", "0")));
