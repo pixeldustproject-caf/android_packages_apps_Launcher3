@@ -207,7 +207,7 @@ public class AppSearchProvider extends ContentProvider {
 
     public AppFilter getBaseFilter() {
         if (mBaseFilter == null) {
-            mBaseFilter = new StringSetAppFilter(mApp.getContext());
+            mBaseFilter = new StringSetAppFilter();
         }
         return mBaseFilter;
     }

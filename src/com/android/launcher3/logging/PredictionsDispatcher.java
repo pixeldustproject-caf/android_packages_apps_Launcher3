@@ -101,7 +101,7 @@ public class PredictionsDispatcher extends UserEventDispatcherExtension implemen
 
     public PredictionsDispatcher(Context context) {
         super(context);
-        mAppFilter = new StringSetAppFilter(context);
+        mAppFilter = new StringSetAppFilter();
         mContext = context;
         mPrefs = Utilities.getPrefs(context);
         mPrefs.registerOnSharedPreferenceChangeListener(this);

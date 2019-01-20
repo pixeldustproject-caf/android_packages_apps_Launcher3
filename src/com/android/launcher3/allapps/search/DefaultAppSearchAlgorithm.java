@@ -48,7 +48,7 @@ public class DefaultAppSearchAlgorithm implements SearchAlgorithm {
     public DefaultAppSearchAlgorithm(Context context, List<AppInfo> apps) {
         mContext = context;
         mApps = apps;
-        mBaseFilter = new StringSetAppFilter(context);
+        mBaseFilter = new StringSetAppFilter();
         mResultHandler = new Handler();
     }
 
